@@ -1,0 +1,88 @@
+def add_time(start, duration, opt = False):
+
+    start_hour,reminder = start.split(":")
+    start_minute,start_meridiem = reminder.split(" ")
+
+    print(start_hour)
+    print(start_minute)
+    print(start_meridiem)
+
+    duration_hour,duration_minute = duration.split(":")
+
+    print(duration_hour)
+    print(duration_minute)
+
+    start_time = convert_to_minutes(start_hour,start_minute,start_meridiem)
+    duration_time = convert_to_minutes(duration_hour,duration_minute,"")
+
+    print(start_time)
+    print(duration_time)
+
+    result_minute = start_time+duration_time
+    result_time = convert_12_hour_format(result_minute)
+    print(result_time)
+    
+    result_hour =  str(result_time[0])
+    result_minute = str(result_time[1])
+    result_meridiem = result_time[2]
+
+    # check digits
+    if len(result_minute) == 1:
+        result_minute = "0" + result_minute
+
+    if opt is not False:
+        start_day = opt.title()
+        day_list = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+
+        if start_day in day_list:
+            index = day_list.index(start_day)
+        else:
+            return("day not in list!")
+
+    new_time = result_hour + ":" + result_minute + " " + result_time[2]
+
+    if opt is not False:
+        new_time = new_time + ", "+ day_list[(index+result_time[3])%7]
+
+    if result_time[3]==1:
+        new_time = new_time + " (next day)"
+
+    if result_time[3]>1:
+        new_time = new_time + " (" + str(result_time[3])+" days later)"
+
+    print(new_time)
+
+ 
+
+    return new_time
+
+def convert_to_minutes(hour,minute,meridiem):
+    return (int(hour)+ (meridiem=="PM")*12)*60+int(minute)
+
+def convert_12_hour_format(time):
+    hour = time//60%24
+    minute = time%60
+    meridiem = "AM"
+    day = time//60//24
+    print("----------")
+    print(hour)
+    print(hour%24>12)
+    print(hour%24 - 12)
+    print("----------")
+
+    if hour%24>11:
+        meridiem = "PM"
+        hour = hour%24 - 12
+
+    if (hour == 0 ):
+        hour = 12
+
+    return [hour,minute,meridiem,day]
+
+#print(10//3,10%3)
+#add_time('3:30 PM', '2:12')
+#add_time('11:55 AM', '3:12')
+
+#add_time('2:59 AM', '34:00')
+add_time('12:59 AM', '0:00')
+

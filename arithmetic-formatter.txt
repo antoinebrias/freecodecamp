@@ -1,0 +1,92 @@
+def arithmetic_arranger(problems, show_answers=False):
+
+    if len(problems)>5:
+        return "Error: Too many problems."
+
+    operator_1_list = []
+    operation_list = []
+    operator_2_list = []
+    dashes_list = []
+    result_list = []
+
+
+    for problem_id,problem in enumerate(problems):
+        splitted_problem = problem.split()
+        #print(splitted_problem)
+        
+        if len(splitted_problem)>3:
+            return 'Error: Numbers must only contain digits.'
+
+        try:
+            operator_1 = splitted_problem[0]
+            operation  = splitted_problem[1]
+            operator_2 = splitted_problem[2]
+
+            #print(operator_1)
+            #print(operation)
+            #print(len(operator_2))
+
+            if not (check_number(operator_1) & check_number(operator_2)):
+                return 'Error: Numbers must only contain digits.'
+
+            if operation not in ['+','-']:
+                return "Error: Operator must be '+' or '-'."
+
+            if len(operator_1) >4 or len(operator_2) >4:
+                return 'Error: Numbers cannot be more than four digits.'
+
+            if operation == '+':
+                result = int(operator_1) + int(operator_2)
+            else:
+                result = int(operator_1) - int(operator_2)
+            result = str(result
+            )
+            max_digit_length = max(len(operator_1),len(operator_2)) +2  
+
+
+            operator_1_list.append(' '*(max_digit_length - len(operator_1)) + operator_1)
+            #operation_list.append(operation)
+            operator_2_list.append(operation + ' '*(max_digit_length - len(operator_2)-1) + operator_2)
+            dashes_list.append('-'*max_digit_length)
+            result_list.append(' '*(max_digit_length - len(result)) + result) 
+
+            if problem_id< len(problems)-1:
+                operator_1_list.append('    ')
+                operator_2_list.append('    ')
+                dashes_list.append('    ')
+                result_list.append('    ')
+
+        except:
+            return 'Error: Numbers must only contain digits.'
+
+
+
+    res = ''.join(operator_1_list) + "\n" + ''.join(operator_2_list) + "\n" + ''.join(dashes_list)
+
+    #print(''.join(operator_1_list))
+    #print(''.join(operator_2_list))
+    #print(''.join(dashes_list))
+    
+    if show_answers is True:
+        res = res + "\n" + ''.join(result_list)
+        #print(''.join(result_list))
+
+    return res
+
+def check_number(number):
+    return all(i.isdigit() for i in number)
+
+
+#print(f'\n{arithmetic_arranger(["32 - 6955", "3801 - 2", "45 + 43", "123 + 49"],True)}')
+
+
+#arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49"])
+#arithmetic_arranger(["32 + 8", "1 - 3801", "9999 + 9999", "523 - 49"], True)
+
+#a= arithmetic_arranger(["3801 - 2", "123 + 49"])
+#print(repr(a))
+#b = ("  3801      123\n-    2    +  49\n------    -----")
+#print(repr(b))
+#print(a == b)
+
+#arithmetic_arranger(["32 - 698", "1 - 3801", "45 + 43", "123 + 49", "988 + 40"], True)
